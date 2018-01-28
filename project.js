@@ -77,61 +77,9 @@ function main() {
 }
 
 function initVertexBuffers(gl) {
-//==============================================================================
-  // Vertices for a cube
-  var vertices = new Float32Array ([
-     0.00, 0.00, 0.00, 1.00,		// first triangle   (x,y,z,w==1)
-     0.20, 0.00, 0.00, 1.00,  
-     0.00, 0.20, 0.00, 1.00,
-     0.00, 0.20, 0.00, 1.00,		// second triangle
-     0.20, 0.00, 0.00, 1.00,
-     0.20, 0.20, 0.00, 1.00,    
-     0.00, 0.20, 0.00, 1.00,    // third triangle 
-     0.20, 0.20, 0.20, 1.00,
-     0.00, 0.20, 0.20, 1.00,
-     0.00, 0.20, 0.00, 1.00,    // fourth triangle
-     0.20, 0.20, 0.00, 1.00,
-     0.20, 0.20, 0.20, 1.00,
-     0.20, 0.00, 0.00, 1.00,    // fifth triangle
-     0.20, 0.00, 0.20, 1.00,
-     0.20, 0.20, 0.20, 1.00,
-     0.20, 0.00, 0.00, 1.00,    // sixth triangle
-     0.20, 0.20, 0.20, 1.00,
-     0.20, 0.20, 0.00, 1.00,
-     0.00, 0.00, 0.00, 1.00,    // seventh triangle
-     0.20, 0.00, 0.00, 1.00,
-     0.00, 0.00, 0.20, 1.00,
-     0.20, 0.00, 0.00, 1.00,    // eigth triangle
-     0.20, 0.00, 0.20, 1.00,
-     0.00, 0.00, 0.20, 1.00,
-     0.00, 0.00, 0.20, 1.00,    // ninth triangle
-     0.00, 0.20, 0.20, 1.00,
-     0.20, 0.20, 0.20, 1.00,
-     0.00, 0.00, 0.20, 1.00,    // tenth triangle
-     0.20, 0.00, 0.20, 1.00,
-     0.20, 0.20, 0.20, 1.00,
-     0.00, 0.00, 0.00, 1.00,    // eleventh triangle
-     0.00, 0.20, 0.00, 1.00,
-     0.00, 0.00, 0.20, 1.00,
-     0.00, 0.20, 0.00, 1.00,    // twelfth triangle
-     0.00, 0.00, 0.20, 1.00,
-     0.00, 0.20, 0.20, 1.00,
-  ]);
 
-  var n = 30;   // The number of vertices
-
-  // Create a buffer object
-  var vertexBuffer = gl.createBuffer();
-  if (!vertexBuffer) {
-    console.log('Failed to create the buffer object');
-    return -1;
-  }
-
-  // Bind the buffer object to target
-  gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);
-
-  // Write date into the buffer object
-  gl.bufferData(gl.ARRAY_BUFFER, vertices, gl.STATIC_DRAW);
+  //custom function that buffers ballerina data
+  bufferVertexData(gl, ballerinaVertices, ballerinaVertexCount);
 
   // Assign the buffer object to a_Position variable
   var a_Position = gl.getAttribLocation(gl.program, 'a_Position');
@@ -154,7 +102,7 @@ function initVertexBuffers(gl) {
   gl.vertexAttribPointer(a_Color, 3, gl.FLOAT, false, 0, 0);
   gl.enableVertexAttribArray(a_Color);
 
-  return n;
+  return ballerinaVertexCount;
 }
 
 function draw(gl, n, currentAngle, modelMatrix, u_ModelMatrix) {
@@ -184,52 +132,22 @@ function animate(angle) {
 // MODEL DEFINITIONS AND LOADS
 //==============================================================================
 
-  // Vertices for a cube
-  var ballerinaBaseComponent = new Float32Array ([
-    0.00, 0.00, 0.00, 1.00,		// first triangle   (x,y,z,w==1)
-    0.20, 0.00, 0.00, 1.00,  
-    0.00, 0.20, 0.00, 1.00,
-    0.00, 0.20, 0.00, 1.00,		// second triangle
-    0.20, 0.00, 0.00, 1.00,
-    0.20, 0.20, 0.00, 1.00,    
-    0.00, 0.20, 0.00, 1.00,    // third triangle 
-    0.20, 0.20, 0.20, 1.00,
-    0.00, 0.20, 0.20, 1.00,
-    0.00, 0.20, 0.00, 1.00,    // fourth triangle
-    0.20, 0.20, 0.00, 1.00,
-    0.20, 0.20, 0.20, 1.00,
-    0.20, 0.00, 0.00, 1.00,    // fifth triangle
-    0.20, 0.00, 0.20, 1.00,
-    0.20, 0.20, 0.20, 1.00,
-    0.20, 0.00, 0.00, 1.00,    // sixth triangle
-    0.20, 0.20, 0.20, 1.00,
-    0.20, 0.20, 0.00, 1.00,
-    0.00, 0.00, 0.00, 1.00,    // seventh triangle
-    0.20, 0.00, 0.00, 1.00,
-    0.00, 0.00, 0.20, 1.00,
-    0.20, 0.00, 0.00, 1.00,    // eigth triangle
-    0.20, 0.00, 0.20, 1.00,
-    0.00, 0.00, 0.20, 1.00,
-    0.00, 0.00, 0.20, 1.00,    // ninth triangle
-    0.00, 0.20, 0.20, 1.00,
-    0.20, 0.20, 0.20, 1.00,
-    0.00, 0.00, 0.20, 1.00,    // tenth triangle
-    0.20, 0.00, 0.20, 1.00,
-    0.20, 0.20, 0.20, 1.00,
-    0.00, 0.00, 0.00, 1.00,    // eleventh triangle
-    0.00, 0.20, 0.00, 1.00,
-    0.00, 0.00, 0.20, 1.00,
-    0.00, 0.20, 0.00, 1.00,    // twelfth triangle
-    0.00, 0.00, 0.20, 1.00,
-    0.00, 0.20, 0.20, 1.00,
- ]);
+function bufferVertexData(gl, vertexList, vertexCount){
 
-var ballerinaFaces = 30; 
+  // Create a buffer object
+  var vertexBuffer = gl.createBuffer();
+  if (!vertexBuffer) {
+    console.log('Failed to create the buffer object');
+    return -1;
+  }
 
-function bufferBallerinaVertexData(){
+  // Bind the buffer object to target
+  gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);
+
+  // Write date into the buffer object
+  gl.bufferData(gl.ARRAY_BUFFER, vertexList, gl.STATIC_DRAW);
 
 }
-
 
 //==============================================================================
 // GENERAL ANIMATION INTERACTIONS
