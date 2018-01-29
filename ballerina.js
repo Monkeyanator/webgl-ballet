@@ -3,9 +3,6 @@ function drawBallerina(gl, n , currentAngle, legAngle, modelMatrix, u_ModelMatri
     // how much should we rotate the legs?
     //var limbRotationAngle = currentAngle / 10.0;
     //console.log(limbRotationAngle);
-
-    // CLEAR BUFFER:: NEED TO MOVE THIS SOMEWHERE ELSE SOON
-    gl.clear(gl.COLOR_BUFFER_BIT);
   
     //set intial translation values
     modelMatrix.setTranslate(-0.50, -0.60, 0.0); 
