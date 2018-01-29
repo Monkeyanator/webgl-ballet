@@ -188,7 +188,8 @@ function bufferVertexData(gl, vertexList, vertexCount){
 
 function playAnimation(){ 
   // update time so animation continues smootly upon continuation
-  g_last = Date.now();
+  g_last_house = Date.now();
+  g_last_ballerina = Date.now();
   ANIMATION_PLAYING = true; 
 }
 
