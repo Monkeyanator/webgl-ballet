@@ -1,9 +1,8 @@
-function drawBallerina(gl, n , currentAngle, legAngle, modelMatrix, u_ModelMatrix){
-  
-    // how much should we rotate the legs?
-    //var limbRotationAngle = currentAngle / 10.0;
-    //console.log(limbRotationAngle);
-  
+function drawBallerina(gl, n , currentAngle, clickRotation, legAngle, modelMatrix, u_ModelMatrix){
+
+    var minorLimbRotation = currentAngle < 180 ? currentAngle : 360 - currentAngle;
+    minorLimbRotation /= 2.0;
+
     //set intial translation values
     modelMatrix.setTranslate(-0.50, -0.60, 0.0); 
     modelMatrix.scale(0.40, 0.40, 0.40); 
@@ -13,6 +12,7 @@ function drawBallerina(gl, n , currentAngle, legAngle, modelMatrix, u_ModelMatri
   
     modelMatrix.translate(0.0, 0.2, 0.0);
     modelMatrix.rotate(currentAngle, 0, 1, 0);
+    modelMatrix.rotate(clickRotation, 0, 0, 1);
   
     pushMatrix(modelMatrix);
   
@@ -30,10 +30,8 @@ function drawBallerina(gl, n , currentAngle, legAngle, modelMatrix, u_ModelMatri
     //Push old again
     pushMatrix(modelMatrix);
   
-    modelMatrix.translate(-0.40, 0.50, 0.00);
-    modelMatrix.rotate(legAngle, 0, 0, 1);
-
-    //modelMatrix.rotate(limbRotationAngle, 0, 0, 1);
+    modelMatrix.translate(-0.5, 0.20, 0.00);
+    modelMatrix.rotate(minorLimbRotation, 0, 0, 1);
 
     pushMatrix(modelMatrix);  //this gets undone after
     modelMatrix.scale(2.2, 0.5, 1);
@@ -47,6 +45,7 @@ function drawBallerina(gl, n , currentAngle, legAngle, modelMatrix, u_ModelMatri
     // Ballerina second leg, right :: MATRIX CONTEXT -> 
   
     modelMatrix.translate(-0.25, 0.03, 0.0);
+    modelMatrix.rotate(-minorLimbRotation, 0, 0, 1);
     pushMatrix(modelMatrix); //this gets undone after
     modelMatrix.scale(1.0, 0.3, 0.5);
   
@@ -64,6 +63,8 @@ function drawBallerina(gl, n , currentAngle, legAngle, modelMatrix, u_ModelMatri
     pushMatrix(modelMatrix);
   
     modelMatrix.translate(0.02, -0.48, 0.0);
+    modelMatrix.rotate(35, 0, 0, 1); 
+    modelMatrix.rotate(legAngle, 0, 0, 1);
     
     pushMatrix(modelMatrix);  //gets undone
     modelMatrix.scale(0.5, 2.2, 1);
@@ -95,6 +96,7 @@ function drawBallerina(gl, n , currentAngle, legAngle, modelMatrix, u_ModelMatri
   
     modelMatrix.translate(0.78, -0.38, 0.0);
     modelMatrix.rotate(35, 0, 0, 1)
+    modelMatrix.rotate(minorLimbRotation, 0, 0, 1);
   
     pushMatrix(modelMatrix);  //gets undone
   
@@ -111,6 +113,7 @@ function drawBallerina(gl, n , currentAngle, legAngle, modelMatrix, u_ModelMatri
     modelMatrix.translate(0.08, -0.24, 0.0);
     pushMatrix(modelMatrix); //this gets undone after
     modelMatrix.rotate(15, 0, 0, 1); 
+    modelMatrix.rotate(-minorLimbRotation, 0, 0, 1);
     modelMatrix.scale(0.3, 1.0, 0.5);
   
     gl.uniformMatrix4fv(u_ModelMatrix, false, modelMatrix.elements);

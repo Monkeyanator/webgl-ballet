@@ -18,11 +18,18 @@
     Please use a browser that supports "canvas"
     </canvas>
 
-    <audio class="audio-player" controls autoplay>
+    <audio class="audio-player" control s autoplay>
         <source src="waltz.mp3" type="audio/mpeg">
         Your browser does not support the audio element.
     </audio>
-  
+
+    <div class="tooltips">
+      <div>Press 'Space' to toggle animation</div>
+      <div>Use 'Up' and 'Down' arrows to control ballerina incline</div>
+      <div></div>
+      <div></div>
+    </div>
+
       <div class="control-group">
           <div class="control-label">Animation</div>
           <div class="btn-group">
@@ -44,7 +51,7 @@
       </div> 
 
       <div class="control-group">
-          <div class="control-label">House</div>
+          <div class="control-label">Ghost train</div>
           <div class="btn-group">
             <button type="button" class="btn btn-default" onclick="lessCCWHouse()">Spin left</button>
             <button type="button" class="btn btn-default" onclick="moreCCWHouse()">Spin right</button>
@@ -53,9 +60,9 @@
 
     <script src="models.js"></script>
     <script src="house.js"></script>
-    <script src="teapot.js"></script>
     <script src="ballerina.js"></script>
     <script src="project.js"></script>
+    <script src="ui-interactions.js"></script>
     <script src="./lib/webgl-utils.js"></script>
     <script src="./lib/webgl-debug.js"></script>
     <script src="./lib/cuon-utils.js"></script>

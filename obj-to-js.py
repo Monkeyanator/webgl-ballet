@@ -1,4 +1,4 @@
-with open('teapot.obj') as teapotFile:
+with open('teddy.obj.txt') as teapotFile:
     teapotLines = teapotFile.readlines()
 
     vDef = [line.strip() for line in teapotLines if line.split(' ')[0] == 'v']
@@ -29,5 +29,5 @@ vertexString += "\n".join(vert_str_list)
 vertexString +=  "]);\n\n"
 vertexString += "var teapotVertexCount = " + str(len(vert_str_list)) + ";"
 
-with open('teapot.js', 'w') as outputFile: 
+with open('teddy.js', 'w') as outputFile: 
     outputFile.write(vertexString)

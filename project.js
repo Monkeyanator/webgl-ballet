@@ -21,10 +21,15 @@ var FSHADER_SOURCE =
 
 // Global ANIMATION variables -- Rotation angle rate (degrees/second)
 var ANIMATION_PLAYING = true;
-var BALLERINA_LEG_ANGLE = -35.0;
 
+var BALLERINA_LEG_ANGLE = -35.0;
 var BALLERINA_ANGLE_STEP = 30.0;
+var BALLERINA_BODY_ROTATION = 0.0;
+
 var HOUSE_ANGLE_STEP = 30.0;
+
+var DRAG_TRANSFORM_X = 0.0;
+var DRAG_TRANSFORM_Y = 0.0;
 
 
 function main() {
@@ -76,7 +81,7 @@ function main() {
     currentBallerinaAngle = ANIMATION_PLAYING ? animate_ballerina(currentBallerinaAngle) : currentBallerinaAngle;  // Update the rotation angle
     currentHouseAngle = ANIMATION_PLAYING ? animate_house(currentHouseAngle) : currentHouseAngle;
   
-    draw(gl, n, currentBallerinaAngle, currentHouseAngle, modelMatrix, u_ModelMatrix);   // Draw the ballerina and the other thing
+    draw(gl, n, currentBallerinaAngle, currentHouseAngle, modelMatrix, u_ModelMatrix, DRAG_TRANSFORM_X, DRAG_TRANSFORM_Y);   // Draw the ballerina and the other thing
     requestAnimationFrame(tick, canvas);   // Don't quite understand this line
   };
   tick();
@@ -100,7 +105,7 @@ function initVertexBuffers(gl) {
   return ballerinaVertexCount;
 }
 
-function draw(gl, n, currentBallerinaAngle, currentHouseAngle, modelMatrix, u_ModelMatrix) {
+function draw(gl, n, currentBallerinaAngle, currentHouseAngle, modelMatrix, u_ModelMatrix, xDrag, yDrag) {
 
   //Clear the buffer
   gl.clear(gl.COLOR_BUFFER_BIT);
@@ -108,11 +113,11 @@ function draw(gl, n, currentBallerinaAngle, currentHouseAngle, modelMatrix, u_Mo
   //TODO buffer once, and switch buffer references
   //Buffer ballerina data and use 
   bufferVertexData(gl, ballerinaVertices, ballerinaVertexCount);
-  drawBallerina(gl, n, currentBallerinaAngle, BALLERINA_LEG_ANGLE, modelMatrix, u_ModelMatrix);
+  drawBallerina(gl, n, currentBallerinaAngle, BALLERINA_BODY_ROTATION, BALLERINA_LEG_ANGLE, modelMatrix, u_ModelMatrix);
 
   //Buffer house data and use
   bufferVertexData(gl, houseVertices, houseVertexCount);
-  drawHouse(gl, houseVertexCount, currentHouseAngle, modelMatrix, u_ModelMatrix);
+  drawHouse(gl, houseVertexCount, currentHouseAngle, modelMatrix, u_ModelMatrix, xDrag, yDrag);
 
 }
 
@@ -158,14 +163,14 @@ function animate_house(angle) {
 function bufferVertexData(gl, vertexList, vertexCount){
 
   // Create a buffer object
-  var ballerinaBuffer = gl.createBuffer();
-  if (!ballerinaBuffer) {
+  var mainBuffer = gl.createBuffer();
+  if (!mainBuffer) {
     console.log('Failed to create the buffer object');
     return -1;
   }
 
   // Bind the buffer object to target
-  gl.bindBuffer(gl.ARRAY_BUFFER, ballerinaBuffer);
+  gl.bindBuffer(gl.ARRAY_BUFFER, mainBuffer);
 
   // Write date into the buffer object
   gl.bufferData(gl.ARRAY_BUFFER, vertexList, gl.STATIC_DRAW);
@@ -177,7 +182,7 @@ function bufferVertexData(gl, vertexList, vertexCount){
     return -1;
   }
 
-  gl.vertexAttribPointer(a_Position, 4, gl.FLOAT, false, 0, 0);
+  gl.vertexAttribPointer(a_Position, 4, gl.FLOAT, true, 0, 0);
   gl.enableVertexAttribArray(a_Position);
 
 }

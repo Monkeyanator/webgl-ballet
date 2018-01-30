@@ -29,6 +29,10 @@ body {
     margin-top: 40px;
 }
 
+.tooltips {
+    margin: 25px;
+}
+
 .btn-group {
     margin-left: 14px;
 }
