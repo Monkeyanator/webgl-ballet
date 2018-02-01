@@ -1,6 +1,6 @@
 //==============================================================================
-  // Vertices for a cube
-  var ballerinaVertices = new Float32Array ([
+
+var ballerinaVertices = new Float32Array ([
     0.00, 0.00, 0.00, 1.00,		// first triangle   (x,y,z,w==1)
     0.20, 0.00, 0.00, 1.00,  
     0.00, 0.20, 0.00, 1.00,
