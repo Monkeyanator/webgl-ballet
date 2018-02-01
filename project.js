@@ -162,6 +162,9 @@ function animate_house(angle) {
 
 function bufferVertexData(gl, vertexList, vertexCount){
 
+  //can use either
+  var FSIZE = vertexList.BYTES_PER_ELEMENT;
+
   // Create a buffer object
   var mainBuffer = gl.createBuffer();
   if (!mainBuffer) {
@@ -175,6 +178,7 @@ function bufferVertexData(gl, vertexList, vertexCount){
   // Write date into the buffer object
   gl.bufferData(gl.ARRAY_BUFFER, vertexList, gl.STATIC_DRAW);
 
+  //HANDLE POSITION BUFFER ATTRIBUTE
   // Assign the buffer object to a_Position variable
   var a_Position = gl.getAttribLocation(gl.program, 'a_Position');
   if(a_Position < 0) {
@@ -182,8 +186,34 @@ function bufferVertexData(gl, vertexList, vertexCount){
     return -1;
   }
 
-  gl.vertexAttribPointer(a_Position, 4, gl.FLOAT, true, 0, 0);
+  //gl.vertexAttribPointer(a_Position, 4, gl.FLOAT, true, 0, 0);
+  gl.vertexAttribPointer(
+    a_Position, 
+    4, 
+    gl.FLOAT, 
+    true, 
+    FSIZE * 7, 
+    0);
+
   gl.enableVertexAttribArray(a_Position);
+
+  //HANDLE COLOR BUFFER ATTRIBUTE
+  var a_Color = gl.getAttribLocation(gl.program, 'a_Color');
+  if(a_Color < 0){
+    console.log('Failed to locate storage for the color attribute!');
+    return -1;
+  }
+
+  //Assign buffer object to a_Color varaible
+  gl.vertexAttribPointer(
+    a_Color, 
+    3, 
+    gl.FLOAT, 
+    false, 
+    FSIZE * 7, 
+    FSIZE * 4);
+  gl.enableVertexAttribArray(a_Color);
+
 
 }
 
