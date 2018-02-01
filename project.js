@@ -33,16 +33,7 @@ var DRAG_TRANSFORM_X = 0.0;
 var DRAG_TRANSFORM_Y = 0.0;
 
 var COLOR_UP = false;
-
-var COLOR_TRANSFORM = {redTransform: 1.0, 
-                        greenTransform: 1.0, 
-                        blueTransform: 1.0};
-
-var COLOR_TRANSFORM_VEC = new Float32Array ([
-  COLOR_TRANSFORM.redTransform,
-  COLOR_TRANSFORM.greenTransform,
-  COLOR_TRANSFORM.blueTransform
-]);
+var COLOR_TRANSFORM = 1.0;
 
 
 function main() {
@@ -239,25 +230,18 @@ function animateColors(gl){
 
   const incAmt = 0.005;
 
-  if(COLOR_TRANSFORM.redTransform > 1.00 || COLOR_TRANSFORM.redTransform <= 0.00){
+  if(COLOR_TRANSFORM > 1.00 || COLOR_TRANSFORM <= 0.00)
     COLOR_UP = !COLOR_UP;
-  }
+  
 
-  if(COLOR_UP){
-    COLOR_TRANSFORM.redTransform += incAmt;
-    COLOR_TRANSFORM.greenTransform += incAmt; 
-    COLOR_TRANSFORM.blueTransform += incAmt;
-  } else {
-    COLOR_TRANSFORM.redTransform -= incAmt;
-    COLOR_TRANSFORM.greenTransform -= incAmt; 
-    COLOR_TRANSFORM.blueTransform -= incAmt;
-  }
+  COLOR_TRANSFORM = COLOR_UP ? COLOR_TRANSFORM + incAmt : COLOR_TRANSFORM - incAmt;
 
+  //Load into shader
   var a_ColorTransform = gl.getAttribLocation(gl.program, 'a_ColorTransform');
   gl.vertexAttrib3f(
     a_ColorTransform, 
-    COLOR_TRANSFORM.redTransform,
-    COLOR_TRANSFORM.greenTransform,
+    COLOR_TRANSFORM,
+    COLOR_TRANSFORM,
     1.0);
   
 }
