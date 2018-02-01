@@ -1,11 +1,12 @@
 var VSHADER_SOURCE =
   'attribute vec4 a_Position;\n' +
   'attribute vec4 a_Color;\n' +
+  'attribute vec4 a_ColorTransform;\n' +
   'varying vec4 v_Color;\n' +
   'uniform mat4 u_ModelMatrix;\n' +
   'void main() {\n' +
   '  gl_Position = u_ModelMatrix * a_Position;\n' +
-  '  v_Color = a_Color;\n' + 
+  '  v_Color = a_Color * a_ColorTransform;\n' + 
   '}\n';
 
 
@@ -30,6 +31,18 @@ var HOUSE_ANGLE_STEP = 30.0;
 
 var DRAG_TRANSFORM_X = 0.0;
 var DRAG_TRANSFORM_Y = 0.0;
+
+var COLOR_UP = false;
+
+var COLOR_TRANSFORM = {redTransform: 1.0, 
+                        greenTransform: 1.0, 
+                        blueTransform: 1.0};
+
+var COLOR_TRANSFORM_VEC = new Float32Array ([
+  COLOR_TRANSFORM.redTransform,
+  COLOR_TRANSFORM.greenTransform,
+  COLOR_TRANSFORM.blueTransform
+]);
 
 
 function main() {
@@ -80,6 +93,7 @@ function main() {
     // Alter current render angle IFF ANIMATION_PLAYING true
     currentBallerinaAngle = ANIMATION_PLAYING ? animate_ballerina(currentBallerinaAngle) : currentBallerinaAngle;  // Update the rotation angle
     currentHouseAngle = ANIMATION_PLAYING ? animate_house(currentHouseAngle) : currentHouseAngle;
+    animateColors(gl);
   
     draw(gl, n, currentBallerinaAngle, currentHouseAngle, modelMatrix, u_ModelMatrix, DRAG_TRANSFORM_X, DRAG_TRANSFORM_Y);   // Draw the ballerina and the other thing
     requestAnimationFrame(tick, canvas);   // Don't quite understand this line
@@ -215,6 +229,37 @@ function bufferVertexData(gl, vertexList, vertexCount){
   gl.enableVertexAttribArray(a_Color);
 
 
+}
+
+//==============================================================================
+// GENERAL ANIMATION INTERACTIONS
+//==============================================================================
+
+function animateColors(gl){
+
+  const incAmt = 0.005;
+
+  if(COLOR_TRANSFORM.redTransform > 1.00 || COLOR_TRANSFORM.redTransform <= 0.00){
+    COLOR_UP = !COLOR_UP;
+  }
+
+  if(COLOR_UP){
+    COLOR_TRANSFORM.redTransform += incAmt;
+    COLOR_TRANSFORM.greenTransform += incAmt; 
+    COLOR_TRANSFORM.blueTransform += incAmt;
+  } else {
+    COLOR_TRANSFORM.redTransform -= incAmt;
+    COLOR_TRANSFORM.greenTransform -= incAmt; 
+    COLOR_TRANSFORM.blueTransform -= incAmt;
+  }
+
+  var a_ColorTransform = gl.getAttribLocation(gl.program, 'a_ColorTransform');
+  gl.vertexAttrib3f(
+    a_ColorTransform, 
+    COLOR_TRANSFORM.redTransform,
+    COLOR_TRANSFORM.greenTransform,
+    1.0);
+  
 }
 
 //==============================================================================
